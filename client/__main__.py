@@ -32,24 +32,24 @@ class Shape:
         pygame.draw.rect(self.display, self.color, [self.posx, self.posy, self.length, self.width])
         
     
-    def move(self, distance):
-        self.distance = distance
-        key = pygame.key.get_pressed()
+    # def move(self, distance):
+    #     self.distance = distance
+    #     key = pygame.key.get_pressed()
         
-        if key[pygame.K_LEFT]:
+    #     if key[pygame.K_LEFT]:
 
-            self.posx -= distance
-        elif key[pygame.K_RIGHT]:
+    #         self.posx -= distance
+    #     elif key[pygame.K_RIGHT]:
             
-            self.posx += distance 
+    #         self.posx += distance 
         
-        elif key[pygame.K_UP]:
+    #     elif key[pygame.K_UP]:
 
-            self.posy -= distance 
+    #         self.posy -= distance 
 
-        elif key[pygame.K_DOWN]:
+    #     elif key[pygame.K_DOWN]:
 
-            self.posy += distance
+    #         self.posy += distance
         
             
     
@@ -69,7 +69,23 @@ while run:
             pygame.quit()
     
     square.draw(display, white, 0, 0, 100, 100)
-    square.move(500)
+    key = pygame.key.get_pressed()
+    distance = 10
+        
+    if key[pygame.K_LEFT]:
+
+        square.posx -= distance
+    elif key[pygame.K_RIGHT]:
+            
+        square.posx += distance 
+        
+    elif key[pygame.K_UP]:
+
+        square.posy -= distance 
+
+    elif key[pygame.K_DOWN]:
+
+        square.posy += distance
 
 
     pygame.display.flip()
