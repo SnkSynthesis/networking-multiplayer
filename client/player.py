@@ -5,7 +5,7 @@ from .square import Square
 
 class Player(Square):
     def __init__(self):
-        super().__init__(100, 100, (255, 0, 0))
+        super().__init__(100, 100, PLAYER_COLOR)
 
     def move(self):
         keys = pygame.key.get_pressed()
