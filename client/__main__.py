@@ -70,7 +70,7 @@ while run:
     
     square.draw(display, white, 0, 0, 100, 100)
     key = pygame.key.get_pressed()
-    distance = 10
+    distance = 5
         
     if key[pygame.K_LEFT]:
 
