@@ -1,2 +1,5 @@
 # networking-multiplayer
-Multiplayer networking
+This is a multiplayer networking
+
+* To run client: `python -m client`
+* To run server: `python -m server`
