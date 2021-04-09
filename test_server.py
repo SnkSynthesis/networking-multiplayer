@@ -12,7 +12,8 @@ def test_joining():
     sock.sendto(json.dumps(data).encode(), (ADDR, PORT))
     res, _ = sock.recvfrom(1024)
     res = json.loads(res.decode())
-    assert res == {"message": "JOIN", "pos": "0,0"}
+    assert res["message"] == "JOIN"
+    assert len(res["pos"].split(",")) == 2
 
 
 def test_leaving():

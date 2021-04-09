@@ -2,6 +2,8 @@ import socket
 import json
 import select
 import logging
+import random
+from client.settings import *
 from .settings import LOGGING_LEVEL
 import sys
 from typing import Dict, Any
@@ -41,7 +43,10 @@ class UDPServer:
             logging.debug(f"Players: {self.players}")
 
             # Send this message with position as confirmation
-            res = {"message": "JOIN", "pos": "0,0"}
+            res = {
+                "message": "JOIN",
+                "pos": f"{random.randint(0, DISPLAY_WIDTH-SQUARE_WIDTH)},{random.randint(0, DISPLAY_HEIGHT-SQUARE_WIDTH)}",
+            }
             self.sock.sendto(json.dumps(res).encode(), addr)
 
         elif data["message"] == "LEAVE":
