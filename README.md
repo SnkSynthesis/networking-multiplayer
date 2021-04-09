@@ -20,7 +20,7 @@ Send:
 
 
 
-Expected Response (`pos` can be anything):
+Expected Response (`pos` is random):
 ```json
 {
     "message": "JOIN", 
