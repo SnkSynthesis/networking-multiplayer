@@ -4,10 +4,10 @@ from .square import Square
 
 
 class Player(Square):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(100, 100, PLAYER_COLOR)
 
-    def move(self):
+    def move(self) -> None:
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:

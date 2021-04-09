@@ -2,28 +2,36 @@ import socket
 import json
 import select
 import logging
-import random
 from .settings import LOGGING_LEVEL
 import sys
+from typing import Dict, Any
 
 
 logging.basicConfig(format="[SERVER] %(levelname)s: %(message)s", level=LOGGING_LEVEL)
 
 
 class UDPServer:
-    def __init__(self, addr, port):
+    def __init__(self, addr: str, port: int) -> None:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((addr, port))
+
+        # setblocking(False) makes the socket non-blocking or async
+        # This means that things like recv(1024) won't synchronously block the execution of the program.
         self.sock.setblocking(False)
+
         self.addr = addr
         self.port = port
-        self.players = {}
 
-    def process_data(self, raw_data, addr):
-        data = json.loads(raw_data.decode())
+        # Keep track of players by username
+        self.players: Dict[str, Dict[str, Any]] = {}
+
+    def process_data(self, raw_data: bytes, addr: str) -> None:
+        # Convert data from bytes to str to dict
+        data: dict = json.loads(raw_data.decode())
         logging.debug(f"Received {data} from {addr}")
 
         if data["message"] == "JOIN":
+            # Make sure the username isn't already present
             if self.players.get(data["username"]) is not None:
                 err = {"message": "ERROR", "desc": "Username already present"}
                 self.sock.sendto(json.dumps(err).encode(), addr)
@@ -32,29 +40,38 @@ class UDPServer:
             logging.info(f"{data['username']} joined")
             logging.debug(f"Players: {self.players}")
 
+            # Send this message with position as confirmation
             res = {"message": "JOIN", "pos": "0,0"}
             self.sock.sendto(json.dumps(res).encode(), addr)
 
         elif data["message"] == "LEAVE":
+            # Make sure that the username is present
             if self.players.get(data["username"]) is None:
                 err = {"message": "ERROR", "desc": "Username not found"}
                 self.sock.sendto(json.dumps(err).encode(), addr)
 
             del self.players[data["username"]]
+            # Echo as confirmation
             self.sock.sendto(raw_data, addr)
             logging.info(f"{data['username']} left")
             logging.debug(f"Players: {self.players}")
 
-    def start(self):
+    def start(self) -> None:
         logging.info(f"Started server on {self.addr}:{self.port}")
         logging.info("Press Ctrl+C to stop server")
         try:
             while True:
+                # 1st parameter - sockets to be monitored for reading data
+                # 2nd parameter - sockets to be monitored for writing data
+                # 3rd parameter - sockets to be monitored for exceptions
+                # 4th parameter - timeout to not let select run forever
                 r_socks, _, _ = select.select([self.sock], [], [], 1)
+
+                # When self.sock is ready to be read, len(r_socks) won't be 0
                 if len(r_socks) != 0:
                     raw_data, addr = self.sock.recvfrom(1024)
                     self.process_data(raw_data, addr)
 
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:  # When Ctrl+C is pressed
             self.sock.close()
             sys.exit()
