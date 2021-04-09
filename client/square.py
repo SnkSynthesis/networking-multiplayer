@@ -9,7 +9,7 @@ class Square:
         self.posy = posy
         self.color = color
 
-    def draw(self, surface: pygame.Surface) -> None:
+    def draw(self, surface: pygame.surface.Surface) -> None:
         pygame.draw.rect(
             surface, self.color, (self.posx, self.posy, SQUARE_WIDTH, SQUARE_WIDTH)
         )
