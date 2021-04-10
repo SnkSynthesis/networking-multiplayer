@@ -27,7 +27,7 @@ class UDPServer:
         # Keep track of players by username
         self.players: Dict[str, Dict[str, Any]] = {}
 
-    def process_data(self, raw_data: bytes, addr: str) -> None:
+    def process_data(self, raw_data: bytes, addr: Any) -> None:
         # Convert data from bytes to str to dict
         data: dict = json.loads(raw_data.decode())
         logging.debug(f"Received {data} from {addr}")
