@@ -37,15 +37,16 @@ class UDPServer:
             if self.players.get(data["username"]) is not None:
                 err = {"message": "ERROR", "desc": "Username already present"}
                 self.sock.sendto(json.dumps(err).encode(), addr)
-
-            self.players[data["username"]] = {"pos": "0,0", "addr": addr}
+    
+            computed_pos = f"{random.randint(0, DISPLAY_WIDTH-SQUARE_WIDTH)},{random.randint(0, DISPLAY_HEIGHT-SQUARE_WIDTH)}"
+            self.players[data["username"]] = {"pos": computed_pos, "addr": addr}
             logging.info(f"{data['username']} joined")
             logging.debug(f"Players: {self.players}")
 
             # Send this message with position as confirmation
             res = {
                 "message": "JOIN",
-                "pos": f"{random.randint(0, DISPLAY_WIDTH-SQUARE_WIDTH)},{random.randint(0, DISPLAY_HEIGHT-SQUARE_WIDTH)}",
+                "pos": computed_pos,
             }
             self.sock.sendto(json.dumps(res).encode(), addr)
 
