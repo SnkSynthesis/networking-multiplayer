@@ -19,6 +19,7 @@ while run:
             run = False
 
     player.move()
+    player.check_collision()
 
     display.fill(BG_COLOR)
     player.draw(display)
