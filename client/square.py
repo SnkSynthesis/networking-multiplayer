@@ -1,13 +1,14 @@
 import pygame
 from .settings import *
 from typing import Any
+from dataclasses import dataclass
 
 
+@dataclass
 class Square:
-    def __init__(self, posx: int, posy: int, color: Any) -> None:
-        self.posx = posx
-        self.posy = posy
-        self.color = color
+    posx: int
+    posy: int
+    color: Any
 
     def draw(self, surface: pygame.surface.Surface) -> None:
         pygame.draw.rect(
