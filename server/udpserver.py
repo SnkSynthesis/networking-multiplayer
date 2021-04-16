@@ -7,9 +7,12 @@ from client.settings import *
 from .settings import LOGGING_LEVEL
 import sys
 from typing import Dict, Any
+from client.square import *
 
 
 logging.basicConfig(format="[SERVER] %(levelname)s: %(message)s", level=LOGGING_LEVEL)
+
+square = Square()
 
 
 class UDPServer:
@@ -61,6 +64,25 @@ class UDPServer:
             self.sock.sendto(raw_data, addr)
             logging.info(f"{data['username']} left")
             logging.debug(f"Players: {self.players}")
+        
+        elif data["message"] == "MOVED":
+
+            
+            exsist = False
+            if self.players.get(data["username"]) is None: 
+                err = {"message": "ERROR", "desc": "Username not found"}
+            
+            self.players[data["username"]] = {"pos": square.posx, square.posy}
+            exsist = True
+        
+        elif data["message"] == "UPDATE":
+
+            if self.players.get(data["username"]) is None and exsist == True:
+                err = {"message": "ERROR", "desc": "Username not found and Original data for MOVED has not been created yet"}
+            
+            self.players[data["username"]] = {"pos": square.posx, square.posy}
+            
+
 
     def start(self) -> None:
         logging.info(f"Started server on {self.addr}:{self.port}")
