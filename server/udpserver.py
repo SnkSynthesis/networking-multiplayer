@@ -68,19 +68,37 @@ class UDPServer:
         elif data["message"] == "MOVED":
 
             
-            exsist = False
+            exist = False
             if self.players.get(data["username"]) is None: 
                 err = {"message": "ERROR", "desc": "Username not found"}
             
             self.players[data["username"]] = {"pos": square.posx, square.posy}
-            exsist = True
+            res = {
+                "message": "MOVED",
+                "players": {
+                    "username": {
+                        "pos": square.posx, square.posy
+                    }
+                }
+            }
+            self.sock.sendto(json.dumps(res).encode(), addr)
+            exist = True
         
         elif data["message"] == "UPDATE":
 
-            if self.players.get(data["username"]) is None and exsist == True:
+            if self.players.get(data["username"]) is None and exist == True:
                 err = {"message": "ERROR", "desc": "Username not found and Original data for MOVED has not been created yet"}
             
             self.players[data["username"]] = {"pos": square.posx, square.posy}
+            res = {
+                "message": "UPDATE",
+                "players": {
+                    "username": {
+                        "pos": square.posx, square.posy
+                    }
+                }
+            }
+            self.sock.sendto(json.dumps(res).encode(), addr)
             
 
 
