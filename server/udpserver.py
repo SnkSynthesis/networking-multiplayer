@@ -38,7 +38,7 @@ class UDPServer:
                 err = {"message": "ERROR", "desc": "Username already present"}
                 self.sock.sendto(json.dumps(err).encode(), addr)
     
-            computed_pos = f"{random.randint(0, DISPLAY_WIDTH-SQUARE_WIDTH)},{random.randint(0, DISPLAY_HEIGHT-SQUARE_WIDTH)}"
+            computed_pos = [random.randint(0, DISPLAY_WIDTH-SQUARE_WIDTH), random.randint(0, DISPLAY_HEIGHT-SQUARE_WIDTH)]
             self.players[data["username"]] = {"pos": computed_pos, "addr": addr}
             logging.info(f"{data['username']} joined")
             logging.debug(f"Players: {self.players}")
