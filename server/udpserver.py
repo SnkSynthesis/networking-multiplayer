@@ -11,7 +11,6 @@ from typing import Dict, Any
 
 logging.basicConfig(format="[SERVER] %(levelname)s: %(message)s", level=LOGGING_LEVEL)
 
-
 class UDPServer:
     def __init__(self, addr: str, port: int) -> None:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -61,6 +60,22 @@ class UDPServer:
             self.sock.sendto(raw_data, addr)
             logging.info(f"{data['username']} left")
             logging.debug(f"Players: {self.players}")
+        
+        elif data["message"] == "UPDATE":
+            if self.players.get(data["username"]) is None:
+                err = {"message": "ERROR", "desc": "Username not found"}
+                self.sock.sendto(json.dumps(err).encode(), addr)
+            
+            self.players[data["username"]]["pos"] = data["pos"]
+            res = {
+                "message": "UPDATE",
+                "players": self.players
+            }
+            self.sock.sendto(json.dumps(res).encode(), addr)
+        else:
+            err = {"message": "ERROR", "desc": "Invalid message"}
+            self.sock.sendto(json.dumps(err).encode(), addr)
+
 
     def start(self) -> None:
         logging.info(f"Started server on {self.addr}:{self.port}")
