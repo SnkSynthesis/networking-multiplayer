@@ -24,7 +24,7 @@ Expected Response (`pos` is random):
 ```json
 {
     "message": "JOIN", 
-    "pos": "0,0"
+    "pos": [0, 0]
 }
 ```
 

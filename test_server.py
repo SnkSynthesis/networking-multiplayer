@@ -13,7 +13,9 @@ def test_joining():
     res, _ = sock.recvfrom(1024)
     res = json.loads(res.decode())
     assert res["message"] == "JOIN"
-    assert len(res["pos"].split(",")) == 2
+    assert len(res["pos"]) == 2
+    assert isinstance(res["pos"][0], int)
+    assert isinstance(res["pos"][1], int)
 
 
 def test_leaving():
