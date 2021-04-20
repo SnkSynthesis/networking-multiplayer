@@ -12,9 +12,6 @@ from client.square import *
 
 logging.basicConfig(format="[SERVER] %(levelname)s: %(message)s", level=LOGGING_LEVEL)
 
-square = Square()
-
-
 class UDPServer:
     def __init__(self, addr: str, port: int) -> None:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -65,38 +62,16 @@ class UDPServer:
             logging.info(f"{data['username']} left")
             logging.debug(f"Players: {self.players}")
         
-        elif data["message"] == "MOVED":
-
-            
-            exist = False
-            if self.players.get(data["username"]) is None: 
-                err = {"message": "ERROR", "desc": "Username not found"}
-            
-            self.players[data["username"]] = {"pos": square.posx, square.posy}
-            res = {
-                "message": "MOVED",
-                "players": {
-                    "username": {
-                        "pos": square.posx, square.posy
-                    }
-                }
-            }
-            self.sock.sendto(json.dumps(res).encode(), addr)
-            exist = True
         
         elif data["message"] == "UPDATE":
 
-            if self.players.get(data["username"]) is None and exist == True:
+            if self.players.get(data["username"]) is None:
                 err = {"message": "ERROR", "desc": "Username not found and Original data for MOVED has not been created yet"}
             
-            self.players[data["username"]] = {"pos": square.posx, square.posy}
+            self.players[data["username"]["pos"]] = data["pos"]
             res = {
                 "message": "UPDATE",
-                "players": {
-                    "username": {
-                        "pos": square.posx, square.posy
-                    }
-                }
+                "players": self.players
             }
             self.sock.sendto(json.dumps(res).encode(), addr)
             

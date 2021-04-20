@@ -22,3 +22,10 @@ def test_leaving():
     res, _ = sock.recvfrom(1024)
     res = json.loads(res.decode())
     assert res == data
+
+def test_moving():
+    data = {"message": "UPDATE", "username": "user-1", "pos": 0, 0}
+    sock.sendto(json.dumps(data).encode(), (ADDR, PORT))
+    res, _ = sock.recvfrom(1024)
+    res = json.loads(res.decode())
+    assert res == data
