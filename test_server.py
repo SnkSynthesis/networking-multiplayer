@@ -26,7 +26,6 @@ def test_moving():
     assert res["message"] == "UPDATE"
     assert len(res["players"]) != 0
     for player in res["players"].values():
-        print(player)
         assert player.get("pos") is not None
         assert player.get("addr") is not None
         assert isinstance(player["pos"], list)
