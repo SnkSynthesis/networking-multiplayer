@@ -17,14 +17,6 @@ def test_joining():
     assert isinstance(res["pos"][0], int)
     assert isinstance(res["pos"][1], int)
 
-
-def test_leaving():
-    data = {"message": "LEAVE", "username": "user-1"}
-    sock.sendto(json.dumps(data).encode(), (ADDR, PORT))
-    res, _ = sock.recvfrom(1024)
-    res = json.loads(res.decode())
-    assert res == data
-
 def test_moving():
     data = {"message": "UPDATE", "username": "user-1", "pos": [0, 0]}
     sock.sendto(json.dumps(data).encode(), (ADDR, PORT))
@@ -32,9 +24,18 @@ def test_moving():
     res = json.loads(res.decode())
     assert res["message"] == "UPDATE"
     assert len(res["players"]) != 0
-    for player in res["players"]:
+    for player in res["players"].values():
+        print(player)
         assert player.get("pos") is not None
+        assert player.get("addr") is not None
         assert isinstance(player["pos"], list)
         assert isinstance(player["pos"][0], int)
         assert isinstance(player["pos"][1], int)
         assert len(player["pos"]) == 2
+
+def test_leaving():
+    data = {"message": "LEAVE", "username": "user-1"}
+    sock.sendto(json.dumps(data).encode(), (ADDR, PORT))
+    res, _ = sock.recvfrom(1024)
+    res = json.loads(res.decode())
+    assert res == data

@@ -7,7 +7,6 @@ from client.settings import *
 from .settings import LOGGING_LEVEL
 import sys
 from typing import Dict, Any
-from client.square import *
 
 
 logging.basicConfig(format="[SERVER] %(levelname)s: %(message)s", level=LOGGING_LEVEL)
@@ -67,7 +66,7 @@ class UDPServer:
                 err = {"message": "ERROR", "desc": "Username not found"}
                 self.sock.sendto(json.dumps(err).encode(), addr)
             
-            self.players[data["username"]["pos"]] = data["pos"]
+            self.players[data["username"]]["pos"] = data["pos"]
             res = {
                 "message": "UPDATE",
                 "players": self.players
