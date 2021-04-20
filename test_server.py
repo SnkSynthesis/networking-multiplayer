@@ -24,8 +24,15 @@ def test_leaving():
     assert res == data
 
 def test_moving():
-    data = {"message": "UPDATE", "username": "user-1", "pos": 0, 0}
+    data = {"message": "UPDATE", "username": "user-1", "pos": [0, 0]}
     sock.sendto(json.dumps(data).encode(), (ADDR, PORT))
     res, _ = sock.recvfrom(1024)
     res = json.loads(res.decode())
-    assert res == data
+    assert res["message"] == "UPDATE"
+    assert len(res["players"]) != 0
+    for player in res["players"]:
+        assert player.get("pos") is not None
+        assert isinstance(player["pos"], list)
+        assert isinstance(player["pos"][0], int)
+        assert isinstance(player["pos"][1], int)
+        assert len(player["pos"]) == 2

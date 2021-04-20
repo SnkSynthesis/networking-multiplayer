@@ -62,11 +62,10 @@ class UDPServer:
             logging.info(f"{data['username']} left")
             logging.debug(f"Players: {self.players}")
         
-        
         elif data["message"] == "UPDATE":
-
             if self.players.get(data["username"]) is None:
-                err = {"message": "ERROR", "desc": "Username not found and Original data for MOVED has not been created yet"}
+                err = {"message": "ERROR", "desc": "Username not found"}
+                self.sock.sendto(json.dumps(err).encode(), addr)
             
             self.players[data["username"]["pos"]] = data["pos"]
             res = {
@@ -74,7 +73,9 @@ class UDPServer:
                 "players": self.players
             }
             self.sock.sendto(json.dumps(res).encode(), addr)
-            
+        else:
+            err = {"message": "ERROR", "desc": "Invalid message"}
+            self.sock.sendto(json.dumps(err).encode(), addr)
 
 
     def start(self) -> None:
