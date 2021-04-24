@@ -14,8 +14,12 @@ def test_joining():
     res = json.loads(res.decode())
     assert res["message"] == "JOIN"
     assert len(res["pos"]) == 2
-    assert isinstance(res["pos"][0], int)
-    assert isinstance(res["pos"][1], int)
+    for item in res["pos"]:
+        assert isinstance(item, int)
+    assert res.get("color") is not None
+    assert len(res["color"]) == 3
+    for item in res["color"]:
+        assert isinstance(item, int)
 
 
 def test_moving():
@@ -28,10 +32,10 @@ def test_moving():
     for player in res["players"].values():
         assert player.get("pos") is not None
         assert player.get("addr") is not None
-        assert isinstance(player["pos"], list)
-        assert isinstance(player["pos"][0], int)
-        assert isinstance(player["pos"][1], int)
         assert len(player["pos"]) == 2
+        assert len(player["color"]) == 3
+        for item in player["color"]:
+            assert isinstance(item, int)
 
 
 def test_leaving():
