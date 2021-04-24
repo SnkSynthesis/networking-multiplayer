@@ -42,17 +42,21 @@ class UDPServer:
                 random.randint(0, DISPLAY_WIDTH - SQUARE_WIDTH),
                 random.randint(0, DISPLAY_HEIGHT - SQUARE_WIDTH),
             ]
-            computed_color = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
-            self.players[data["username"]] = {"pos": computed_pos, "addr": addr, "color": computed_color}
+            computed_color = [
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255),
+            ]
+            self.players[data["username"]] = {
+                "pos": computed_pos,
+                "addr": addr,
+                "color": computed_color,
+            }
             logging.info(f"{data['username']} joined")
             logging.debug(f"Players: {self.players}")
 
             # Send this message with position and color as confirmation
-            res = {
-                "message": "JOIN",
-                "pos": computed_pos,
-                "color": computed_color
-            }
+            res = {"message": "JOIN", "pos": computed_pos, "color": computed_color}
             self.sock.sendto(json.dumps(res).encode(), addr)
 
         elif data["message"] == "LEAVE":
