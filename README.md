@@ -2,6 +2,7 @@
 This is a multiplayer game using Python, UDP, and Pygame
 
 * Install dependencies: `pip install -r requirements.txt`
+* Install development dependencies: `pip install -r requirements-dev.txt`
 * To run client: `python -m client`
 * To run server: `python -m server`
 
