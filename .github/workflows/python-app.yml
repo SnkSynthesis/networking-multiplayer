@@ -31,4 +31,5 @@ jobs:
         mypy .
     - name: Test with pytest
       run: |
+        python -m server &
         pytest
