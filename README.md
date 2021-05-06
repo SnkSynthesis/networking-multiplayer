@@ -1,5 +1,5 @@
 # Networking Multiplayer
-This is a multiplayer game using Python, UDP, and Pygame
+This is a multiplayer game using Python, UDP, and Pygame. A collaboration with @IsaiahT-Tech.
 
 * Install dependencies: `pip install -r requirements.txt`
 * Install development dependencies: `pip install -r requirements-dev.txt`
