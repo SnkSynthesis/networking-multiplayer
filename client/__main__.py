@@ -32,9 +32,11 @@ try:
 
         player.move()
         player.check_collision()
+        
 
         display.fill(BG_COLOR)
         player.draw(display)
+        conn.update(player, display)
         pygame.display.update()
 except KeyboardInterrupt:
     pygame.quit()
