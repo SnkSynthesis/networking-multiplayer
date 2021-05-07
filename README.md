@@ -6,6 +6,8 @@ This is a multiplayer game using Python, UDP, and Pygame. A collaboration with @
 * To run client: `python -m client`
 * To run server: `python -m server`
 
+**NOTE**: *The server must be running otherwise the client can't run*
+
 **NOTE**: *The client side doesn't except usernames longer than 4 characters* 
 
 ## Server
