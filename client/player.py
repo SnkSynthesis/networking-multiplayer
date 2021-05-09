@@ -2,11 +2,12 @@ import pygame
 from .settings import *
 from .square import Square
 from typing import Any
+import random
 
 
 class Player(Square):
     def __init__(self, username: str, color: Any) -> None:
-        super().__init__(username, 100, 100, color)
+        super().__init__(username, random.randint(0, DISPLAY_WIDTH), random.randint(0, DISPLAY_HEIGHT), color)
 
     def check_collision(self) -> None:
         # Check if it collides with borders (X-Axis)
